@@ -11,6 +11,7 @@ import ContestsPage from "./pages/ContestsPage";
 import InterviewPage from "./pages/InterviewPage";
 import ProblemSolvePage from "./pages/ProblemSolvePage";
 import CreateProblemPage from "./pages/CreateProblemPage";
+import ExplorePage from "./pages/ExplorePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/explore" element={<ExplorePage />} />
           <Route path="/problems" element={<ProblemsPage />} />
           <Route path="/problems/create" element={<CreateProblemPage />} />
           <Route path="/sheets" element={<SheetsPage />} />
