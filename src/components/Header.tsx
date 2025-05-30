@@ -2,14 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { User, Menu, Zap, Trophy, Target, Code, Compass } from "lucide-react";
+import { User, Menu, Zap, Trophy, Target, Code } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
   
   const navItems = [
-    { name: "Explore", path: "/explore", icon: Compass },
     { name: "Problems", path: "/problems", icon: Code },
     { name: "Sheets", path: "/sheets", icon: Target },
     { name: "Contests", path: "/contests", icon: Trophy },
