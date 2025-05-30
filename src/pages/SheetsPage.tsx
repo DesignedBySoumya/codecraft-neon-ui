@@ -1,12 +1,14 @@
-
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Users, Heart, Share, Copy } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SheetsPage = () => {
+  const navigate = useNavigate();
+
   const mySheets = [
     {
       id: 1,
@@ -127,7 +129,10 @@ const SheetsPage = () => {
             <h1 className="text-3xl font-bold text-craft-text-primary mb-2">Problem Sheets</h1>
             <p className="text-craft-text-secondary">Curated collections of problems for focused practice</p>
           </div>
-          <Button className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg">
+          <Button 
+            onClick={() => navigate("/sheets/create")}
+            className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Create Sheet
           </Button>
