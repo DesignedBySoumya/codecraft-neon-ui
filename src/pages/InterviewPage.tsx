@@ -1,12 +1,16 @@
 
+import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import StatsCard from "@/components/StatsCard";
+import PermissionModal from "@/components/PermissionModal";
 import { Play, Clock, TrendingUp, Target, BarChart3, History } from "lucide-react";
 
 const InterviewPage = () => {
+  const [showPermissionModal, setShowPermissionModal] = useState(false);
+
   const pastInterviews = [
     {
       id: 1,
@@ -121,7 +125,11 @@ const InterviewPage = () => {
               ))}
             </div>
 
-            <Button className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg text-lg px-8 py-3">
+            <Button 
+              id="start-interview"
+              onClick={() => setShowPermissionModal(true)}
+              className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg text-lg px-8 py-3"
+            >
               <Play className="w-5 h-5 mr-2" />
               Start Interview
             </Button>
@@ -142,6 +150,11 @@ const InterviewPage = () => {
           </div>
         </div>
       </div>
+
+      <PermissionModal 
+        open={showPermissionModal} 
+        onOpenChange={setShowPermissionModal} 
+      />
     </div>
   );
 };
