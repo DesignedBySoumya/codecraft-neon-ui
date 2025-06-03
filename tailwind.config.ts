@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -82,9 +83,6 @@ export default {
 				'code': ['Fira Code', 'JetBrains Mono', 'monospace'],
 				'sans': ['Inter', 'system-ui', 'sans-serif'],
 			},
-			backgroundImage: {
-				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-			},
 			keyframes: {
 				'accordion-down': {
 					from: {
@@ -118,17 +116,7 @@ export default {
 					'0%': { transform: 'scale(1)', filter: 'brightness(1)' },
 					'50%': { transform: 'scale(1.1)', filter: 'brightness(1.5)' },
 					'100%': { transform: 'scale(1)', filter: 'brightness(1)' }
-				},
-				'scale-in': {
-					'0%': {
-						transform: 'scale(0.8)',
-						opacity: '0'
-					},
-					'100%': {
-						transform: 'scale(1)',
-						opacity: '1'
-					}
-				},
+				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -136,7 +124,6 @@ export default {
 				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
 				'xp-fill': 'xp-fill 1s ease-out',
 				'level-up': 'level-up 0.6s ease-in-out',
-				'scale-in': 'scale-in 0.5s ease-out',
 			}
 		}
 	},
