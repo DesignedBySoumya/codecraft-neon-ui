@@ -110,7 +110,11 @@ const SheetsPage = () => {
                 Share
               </Button>
             )}
-            <Button size="sm" className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg">
+            <Button 
+              size="sm" 
+              className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg"
+              onClick={() => navigate(`/sheet/${sheet.id}`)}
+            >
               Open
             </Button>
           </div>

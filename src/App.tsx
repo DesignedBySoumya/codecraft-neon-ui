@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ProblemsPage from "./pages/ProblemsPage";
 import SheetsPage from "./pages/SheetsPage";
+import SheetProblemManagerPage from "./pages/SheetProblemManagerPage";
 import ContestsPage from "./pages/ContestsPage";
 import InterviewPage from "./pages/InterviewPage";
 import InterviewSessionPage from "./pages/InterviewSessionPage";
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/problems/create" element={<CreateProblemPage />} />
           <Route path="/sheets" element={<SheetsPage />} />
           <Route path="/sheets/create" element={<CreateSheetPage />} />
+          <Route path="/sheet/:id" element={<SheetProblemManagerPage />} />
           <Route path="/create-list/:sourceId" element={<CreateListPage />} />
           <Route path="/contests" element={<ContestsPage />} />
           <Route path="/interview" element={<InterviewPage />} />
