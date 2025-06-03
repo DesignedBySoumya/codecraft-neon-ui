@@ -4,9 +4,22 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { User, Menu, Zap, Trophy, Target, Code } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useXPAnimation } from "@/hooks/useXPAnimation";
 
-const Header = () => {
+interface HeaderProps {
+  currentXP?: number;
+  targetXP?: number;
+  animateXP?: boolean;
+}
+
+const Header = ({ currentXP = 247, targetXP = 247, animateXP = false }: HeaderProps) => {
   const location = useLocation();
+  const { animatedXP, isAnimating } = useXPAnimation({
+    currentXP,
+    targetXP,
+    isActive: animateXP,
+    duration: 1500
+  });
   
   const navItems = [
     { name: "Problems", path: "/problems", icon: Code },
@@ -52,7 +65,11 @@ const Header = () => {
               <Badge className="bg-craft-accent/20 text-craft-accent border-craft-accent/30">
                 Level 12
               </Badge>
-              <span className="text-craft-text-secondary text-sm">247 XP</span>
+              <span className={`text-craft-text-secondary text-sm transition-all duration-300 ${
+                isAnimating ? 'text-craft-accent animate-pulse' : ''
+              }`}>
+                {animatedXP} XP
+              </span>
             </div>
             
             <div className="w-8 h-8 bg-gradient-to-br from-craft-accent to-craft-accent-secondary rounded-full flex items-center justify-center cursor-pointer hover:shadow-lg hover:shadow-craft-accent/25 transition-all duration-200">

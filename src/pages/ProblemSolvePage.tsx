@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import CodeEditor from "@/components/CodeEditor";
 import ProblemDescription from "@/components/ProblemDescription";
 import TestResults from "@/components/TestResults";
+import CelebrationPopup from "@/components/CelebrationPopup";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Send, Settings, ChevronLeft, ChevronRight } from "lucide-react";
@@ -25,6 +25,12 @@ const ProblemSolvePage = () => {
   const [testResults, setTestResults] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [leftPanelWidth, setLeftPanelWidth] = useState(35);
+  
+  // XP and celebration state
+  const [currentXP, setCurrentXP] = useState(247);
+  const [targetXP, setTargetXP] = useState(247);
+  const [animateXP, setAnimateXP] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   // Mock problem data - in real app this would come from API
   const problem = {
@@ -82,14 +88,36 @@ You can return the answer in any order.`,
     
     // Simulate submission
     setTimeout(() => {
-      toast.success("Solution accepted! +15 XP");
+      // Check if all test cases pass (simulate success)
+      const allTestsPassed = testResults?.passed === testResults?.total;
+      
+      if (allTestsPassed) {
+        // Show celebration popup and animate XP
+        const xpGained = 30;
+        setTargetXP(currentXP + xpGained);
+        setShowCelebration(true);
+        setAnimateXP(true);
+        toast.success("Solution accepted!");
+      } else {
+        toast.error("Some test cases failed. Please fix your solution.");
+      }
       setIsRunning(false);
     }, 3000);
   };
 
+  const handleCelebrationClose = () => {
+    setShowCelebration(false);
+    setCurrentXP(targetXP); // Update current XP to new value
+    setAnimateXP(false);
+  };
+
   return (
     <div className="min-h-screen bg-craft-bg">
-      <Header />
+      <Header 
+        currentXP={currentXP}
+        targetXP={targetXP}
+        animateXP={animateXP}
+      />
       
       <div className="flex h-[calc(100vh-80px)]">
         {/* Left Panel - Problem Description */}
@@ -202,6 +230,15 @@ You can return the answer in any order.`,
           )}
         </div>
       </div>
+
+      {/* Celebration Popup */}
+      <CelebrationPopup
+        isOpen={showCelebration}
+        onClose={handleCelebrationClose}
+        xpGained={30}
+        currentXP={currentXP}
+        newXP={targetXP}
+      />
     </div>
   );
 };
