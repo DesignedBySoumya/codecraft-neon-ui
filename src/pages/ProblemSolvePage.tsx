@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import CodeEditor from "@/components/CodeEditor";
@@ -30,11 +29,11 @@ const ProblemSolvePage = () => {
   const [showCelebration, setShowCelebration] = useState(false);
 
   // Set starter code when problem loads
-  useState(() => {
+  useEffect(() => {
     if (problem?.starter_code && code === "") {
       setCode(problem.starter_code);
     }
-  }, [problem?.starter_code]);
+  }, [problem?.starter_code, code]);
 
   const handleRunCode = async () => {
     setIsRunning(true);
