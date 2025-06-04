@@ -145,9 +145,6 @@ Expected: [0,1]`;
     setAnimateXP(false);
   };
 
-  // Check if all tests passed for Submit button state
-  const allTestsPassed = terminalTestResults.length > 0 && terminalTestResults.every(test => test.passed);
-
   return (
     <div className="min-h-screen bg-craft-bg">
       <Header 
@@ -210,7 +207,7 @@ Expected: [0,1]`;
         />
 
         {/* Right Panel - Code Editor */}
-        <div className="flex-1 flex flex-col relative">
+        <div className="flex-1 flex flex-col">
           {/* Editor Header */}
           <div className="bg-craft-panel border-b border-craft-border p-4">
             <div className="flex items-center justify-between">
@@ -229,56 +226,53 @@ Expected: [0,1]`;
                   <Settings className="w-4 h-4" />
                 </Button>
               </div>
+              
+              <div className="flex items-center space-x-2">
+                <Button 
+                  onClick={handleRunCode}
+                  disabled={isRunning}
+                  variant="outline" 
+                  className="border-craft-border text-craft-text-secondary hover:border-craft-accent hover:text-craft-accent"
+                >
+                  {isRunning ? (
+                    <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Play className="w-4 h-4 mr-2" />
+                  )}
+                  Run
+                </Button>
+                <Button 
+                  onClick={handleSubmit}
+                  disabled={isRunning}
+                  className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg"
+                >
+                  {isRunning ? (
+                    <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Send className="w-4 h-4 mr-2" />
+                  )}
+                  Submit
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Code Editor Container with Floating Action Buttons */}
-          <div className="flex-1 relative">
+          {/* Code Editor */}
+          <div className="flex-1">
             <CodeEditor 
               value={code}
               onChange={setCode}
               language={language}
             />
-            
-            {/* Floating Action Buttons - Top Right Corner */}
-            <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
-              <Button 
-                onClick={handleRunCode}
-                disabled={isRunning}
-                variant="outline" 
-                className="border-craft-border bg-craft-panel/90 backdrop-blur-sm text-craft-text-secondary hover:border-craft-accent hover:text-craft-accent shadow-lg"
-              >
-                {isRunning ? (
-                  <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
-                ) : (
-                  <Play className="w-4 h-4 mr-2" />
-                )}
-                Run
-              </Button>
-              <Button 
-                onClick={handleSubmit}
-                disabled={isRunning || !allTestsPassed}
-                className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg shadow-lg disabled:opacity-50"
-              >
-                {isRunning ? (
-                  <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
-                ) : (
-                  <Send className="w-4 h-4 mr-2" />
-                )}
-                Submit
-              </Button>
-            </div>
           </div>
 
-          {/* Terminal Card - Fixed Position Below Editor */}
-          <div className="relative">
-            <TerminalCard
-              outputText={terminalOutput}
-              testResults={terminalTestResults}
-              isVisible={showTerminal}
-              onClose={() => setShowTerminal(false)}
-            />
-          </div>
+          {/* Terminal Card */}
+          <TerminalCard
+            outputText={terminalOutput}
+            testResults={terminalTestResults}
+            isVisible={showTerminal}
+            onClose={() => setShowTerminal(false)}
+          />
 
           {/* Test Results */}
           {testResults && (

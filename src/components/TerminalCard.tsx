@@ -15,26 +15,24 @@ interface TerminalCardProps {
 }
 
 const TerminalCard = ({ outputText, testResults, isVisible, onClose }: TerminalCardProps) => {
-  const [viewMode, setViewMode] = useState<"output" | "testcases">("testcases");
+  const [viewMode, setViewMode] = useState<"output" | "testcases">("output");
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Auto-switch to test cases if we have test results
-  const currentViewMode = testResults.length > 0 ? "testcases" : viewMode;
+  // Auto-switch to test cases if all tests pass
+  const allTestsPassed = testResults.length > 0 && testResults.every(test => test.passed);
+  
+  // If all tests passed and we have test results, show test cases view
+  const currentViewMode = allTestsPassed && testResults.length > 0 ? "testcases" : viewMode;
 
   if (!isVisible) return null;
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-20 bg-craft-panel border-t border-craft-border shadow-lg">
+    <Card className="bg-craft-panel border-craft-border shadow-lg mx-4 mb-4">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-craft-border">
         <div className="flex items-center space-x-2">
           <Terminal className="w-5 h-5 text-craft-accent" />
           <h3 className="text-craft-text-primary font-semibold">Terminal</h3>
-          {testResults.length > 0 && (
-            <span className="text-craft-text-secondary text-sm">
-              ({testResults.filter(t => t.passed).length}/{testResults.length} passed)
-            </span>
-          )}
         </div>
         
         <div className="flex items-center space-x-4">
@@ -51,9 +49,9 @@ const TerminalCard = ({ outputText, testResults, isVisible, onClose }: TerminalC
             className="text-craft-text-secondary hover:text-craft-accent"
           >
             {isCollapsed ? (
-              <ChevronUp className="w-4 h-4" />
-            ) : (
               <ChevronDown className="w-4 h-4" />
+            ) : (
+              <ChevronUp className="w-4 h-4" />
             )}
           </Button>
           
@@ -70,7 +68,7 @@ const TerminalCard = ({ outputText, testResults, isVisible, onClose }: TerminalC
 
       {/* Content */}
       {!isCollapsed && (
-        <div className="p-4 max-h-72 overflow-y-auto">
+        <div className="p-4">
           {currentViewMode === "output" ? (
             <OutputTerminalBlock outputText={outputText} />
           ) : (
@@ -86,7 +84,7 @@ const TerminalCard = ({ outputText, testResults, isVisible, onClose }: TerminalC
           )}
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 
