@@ -7,6 +7,7 @@ import ProblemDescription from "@/components/ProblemDescription";
 import TestResults from "@/components/TestResults";
 import CelebrationPopup from "@/components/CelebrationPopup";
 import LoadingAnimation from "@/components/LoadingAnimation";
+import TerminalCard from "@/components/TerminalCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Send, Settings, ChevronLeft, ChevronRight } from "lucide-react";
@@ -27,6 +28,11 @@ const ProblemSolvePage = () => {
   const [testResults, setTestResults] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [leftPanelWidth, setLeftPanelWidth] = useState(35);
+  
+  // Terminal card state
+  const [showTerminal, setShowTerminal] = useState(false);
+  const [terminalOutput, setTerminalOutput] = useState("");
+  const [terminalTestResults, setTerminalTestResults] = useState([]);
   
   // XP and celebration state
   const [currentXP, setCurrentXP] = useState(247);
@@ -68,8 +74,34 @@ You can return the answer in any order.`,
     setIsRunning(true);
     toast("Running code...");
     
+    // Show terminal card when running
+    setShowTerminal(true);
+    setTerminalOutput("Running code...\n");
+    
     // Simulate API call
     setTimeout(() => {
+      // Mock output and test results
+      const mockOutput = `Input: [2,7,11,15], target = 9
+Output: [0,1]
+Expected: [0,1]
+
+Input: [3,2,4], target = 6
+Output: [1,2]
+Expected: [1,2]
+
+Input: [3,3], target = 6
+Output: Time Limit Exceeded
+Expected: [0,1]`;
+
+      const mockTerminalTests = [
+        { id: 1, passed: true },
+        { id: 2, passed: true },
+        { id: 3, passed: false }
+      ];
+
+      setTerminalOutput(mockOutput);
+      setTerminalTestResults(mockTerminalTests);
+      
       setTestResults({
         passed: 2,
         total: 3,
@@ -233,6 +265,14 @@ You can return the answer in any order.`,
               language={language}
             />
           </div>
+
+          {/* Terminal Card */}
+          <TerminalCard
+            outputText={terminalOutput}
+            testResults={terminalTestResults}
+            isVisible={showTerminal}
+            onClose={() => setShowTerminal(false)}
+          />
 
           {/* Test Results */}
           {testResults && (
