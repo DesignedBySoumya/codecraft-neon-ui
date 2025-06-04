@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
@@ -5,6 +6,7 @@ import CodeEditor from "@/components/CodeEditor";
 import ProblemDescription from "@/components/ProblemDescription";
 import TestResults from "@/components/TestResults";
 import CelebrationPopup from "@/components/CelebrationPopup";
+import LoadingAnimation from "@/components/LoadingAnimation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Send, Settings, ChevronLeft, ChevronRight } from "lucide-react";
@@ -200,7 +202,11 @@ You can return the answer in any order.`,
                   variant="outline" 
                   className="border-craft-border text-craft-text-secondary hover:border-craft-accent hover:text-craft-accent"
                 >
-                  <Play className="w-4 h-4 mr-2" />
+                  {isRunning ? (
+                    <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Play className="w-4 h-4 mr-2" />
+                  )}
                   Run
                 </Button>
                 <Button 
@@ -208,7 +214,11 @@ You can return the answer in any order.`,
                   disabled={isRunning}
                   className="bg-craft-accent hover:bg-craft-accent/80 text-craft-bg"
                 >
-                  <Send className="w-4 h-4 mr-2" />
+                  {isRunning ? (
+                    <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Send className="w-4 h-4 mr-2" />
+                  )}
                   Submit
                 </Button>
               </div>
