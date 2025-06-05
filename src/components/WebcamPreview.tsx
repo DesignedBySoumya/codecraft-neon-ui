@@ -1,14 +1,15 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Camera } from "lucide-react";
+import { Camera, CameraOff } from "lucide-react";
 
-interface CameraPreviewProps {
+interface WebcamPreviewProps {
   enabled: boolean;
 }
 
-const CameraPreview = ({ enabled }: CameraPreviewProps) => {
+const WebcamPreview = ({ enabled }: WebcamPreviewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasPermission, setHasPermission] = useState(false);
 
   useEffect(() => {
     const startCamera = async () => {
@@ -16,8 +17,10 @@ const CameraPreview = ({ enabled }: CameraPreviewProps) => {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ video: true });
           videoRef.current.srcObject = stream;
+          setHasPermission(true);
         } catch (error) {
           console.error("Error accessing camera:", error);
+          setHasPermission(false);
         }
       }
     };
@@ -32,10 +35,10 @@ const CameraPreview = ({ enabled }: CameraPreviewProps) => {
     };
   }, [enabled]);
 
-  if (!enabled) {
+  if (!enabled || !hasPermission) {
     return (
       <Card className="fixed bottom-4 right-4 w-32 h-24 bg-craft-panel border-craft-border flex items-center justify-center shadow-lg">
-        <Camera className="w-6 h-6 text-craft-text-secondary" />
+        <CameraOff className="w-6 h-6 text-craft-text-secondary" />
       </Card>
     );
   }
@@ -55,4 +58,4 @@ const CameraPreview = ({ enabled }: CameraPreviewProps) => {
   );
 };
 
-export default CameraPreview;
+export default WebcamPreview;
