@@ -10,6 +10,8 @@ import ProblemsPage from "./pages/ProblemsPage";
 import SheetsPage from "./pages/SheetsPage";
 import SheetProblemManagerPage from "./pages/SheetProblemManagerPage";
 import ContestsPage from "./pages/ContestsPage";
+import LiveContestPage from "./pages/LiveContestPage";
+import ResultsPage from "./pages/ResultsPage";
 import InterviewPage from "./pages/InterviewPage";
 import InterviewSessionPage from "./pages/InterviewSessionPage";
 import InterviewAnalysisPage from "./pages/InterviewAnalysisPage";
@@ -37,6 +39,8 @@ const App = () => {
             <Route path="/sheet/:id" element={<SheetProblemManagerPage />} />
             <Route path="/create-list/:sourceId" element={<CreateListPage />} />
             <Route path="/contests" element={<ContestsPage />} />
+            <Route path="/live-contest/:id" element={<LiveContestPage />} />
+            <Route path="/results/:id" element={<ResultsPage />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/interview-session" element={<InterviewSessionPage />} />
             <Route path="/interview-analysis" element={<InterviewAnalysisPage />} />
