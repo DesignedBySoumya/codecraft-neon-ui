@@ -1,10 +1,8 @@
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Play, Send, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import CodeEditor from "./CodeEditor";
-import TerminalCard from "./TerminalCard";
-import LoadingAnimation from "./LoadingAnimation";
+import TerminalDrawer from "./TerminalDrawer";
 
 interface ContestCodePanelProps {
   code: string;
@@ -33,8 +31,13 @@ const ContestCodePanel = ({
   terminalTestResults,
   onCloseTerminal
 }: ContestCodePanelProps) => {
+  const handleRunTests = () => {
+    // This will be the same as run code for now, but could be different
+    onRunCode();
+  };
+
   return (
-    <>
+    <div className="flex flex-col h-full">
       {/* Editor Header */}
       <div className="bg-craft-panel border-b border-craft-border p-4">
         <div className="flex items-center justify-between">
@@ -53,56 +56,32 @@ const ContestCodePanel = ({
               <Settings className="w-4 h-4" />
             </Button>
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <Button 
-              onClick={onRunCode}
-              disabled={isRunning}
-              variant="outline" 
-              className="border-craft-border text-craft-text-secondary hover:border-craft-accent hover:text-craft-accent"
-              title="Run your code"
-            >
-              {isRunning ? (
-                <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
-              ) : (
-                <Play className="w-4 h-4 mr-2" />
-              )}
-              Run
-            </Button>
-            <Button 
-              onClick={onMarkSolved}
-              disabled={isRunning}
-              className="bg-craft-success hover:bg-craft-success/80 text-white"
-              title="Submit your solution"
-            >
-              {isRunning ? (
-                <LoadingAnimation size="sm" className="w-4 h-4 mr-2" />
-              ) : (
-                <Send className="w-4 h-4 mr-2" />
-              )}
-              Submit
-            </Button>
-          </div>
         </div>
       </div>
 
       {/* Code Editor */}
-      <div className="flex-1">
+      <div className="flex-1 relative">
         <CodeEditor 
           value={code}
           onChange={onChange}
           language={language}
         />
+        
+        {/* Terminal Drawer */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <TerminalDrawer
+            isOpen={showTerminal}
+            onToggle={onCloseTerminal}
+            outputText={terminalOutput}
+            testResults={terminalTestResults}
+            onRunCode={onRunCode}
+            onRunTests={handleRunTests}
+            onSubmit={onMarkSolved}
+            isRunning={isRunning}
+          />
+        </div>
       </div>
-
-      {/* Terminal Card */}
-      <TerminalCard
-        outputText={terminalOutput}
-        testResults={terminalTestResults}
-        isVisible={showTerminal}
-        onClose={onCloseTerminal}
-      />
-    </>
+    </div>
   );
 };
 
