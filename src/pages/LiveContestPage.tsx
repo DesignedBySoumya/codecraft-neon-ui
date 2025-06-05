@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
@@ -8,16 +9,11 @@ import ContestTopBar from "@/components/ContestTopBar";
 import QuestionNavMenu from "@/components/QuestionNavMenu";
 import WebcamPreview from "@/components/WebcamPreview";
 import SummaryPopup from "@/components/SummaryPopup";
-import CameraPermissionModal from "@/components/CameraPermissionModal";
 import { toast } from "sonner";
 
 const LiveContestPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  // Camera permission state
-  const [cameraPermission, setCameraPermission] = useState<'pending' | 'granted' | 'denied'>('pending');
-  const [showCameraModal, setShowCameraModal] = useState(true);
   
   // Contest state
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -28,6 +24,7 @@ const LiveContestPage = () => {
   const [terminalOutput, setTerminalOutput] = useState("");
   const [terminalTestResults, setTerminalTestResults] = useState([]);
   const [showSummary, setShowSummary] = useState(false);
+  const [cameraPermission, setCameraPermission] = useState(false);
   const [leftPanelWidth, setLeftPanelWidth] = useState(40);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -167,27 +164,15 @@ The overall run time complexity should be O(log (m+n)).`,
     }
   ];
 
-  // Camera permission handlers
-  const handleCameraPermissionGranted = () => {
-    setCameraPermission('granted');
-    setShowCameraModal(false);
-    toast.success("Camera access granted - contest ready!");
-  };
-
-  const handleCameraPermissionDenied = () => {
-    setCameraPermission('denied');
-    // Keep modal open to block access
-  };
-
   // Request camera permission on load
   useEffect(() => {
     const requestCamera = async () => {
       try {
         await navigator.mediaDevices.getUserMedia({ video: true });
-        setCameraPermission('granted');
+        setCameraPermission(true);
         toast.success("Camera access granted");
       } catch (error) {
-        setCameraPermission('denied');
+        setCameraPermission(false);
         toast.error("Camera permission denied");
       }
     };
@@ -273,31 +258,6 @@ Test Case 3: ❌ Failed (Expected: [1,2], Got: [2,1])`;
 
   const answeredCount = questionStates.filter(q => q.answered).length;
 
-  // Only render contest UI if camera permission is granted
-  if (cameraPermission !== 'granted') {
-    return (
-      <>
-        <div className="min-h-screen bg-craft-bg">
-          <Header />
-          <div className="container mx-auto p-8 text-center">
-            <h1 className="text-2xl font-bold text-craft-text-primary mb-4">
-              Live Contest - Camera Access Required
-            </h1>
-            <p className="text-craft-text-secondary">
-              Please grant camera permission to access the contest.
-            </p>
-          </div>
-        </div>
-        
-        <CameraPermissionModal
-          isOpen={showCameraModal}
-          onPermissionGranted={handleCameraPermissionGranted}
-          onPermissionDenied={handleCameraPermissionDenied}
-        />
-      </>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-craft-bg">
       <Header />
@@ -349,13 +309,8 @@ Test Case 3: ❌ Failed (Expected: [1,2], Got: [2,1])`;
         onClose={() => setIsNavMenuOpen(false)}
       />
 
-      {/* Webcam Preview - Now shows a monitoring indicator */}
-      <div className="fixed bottom-4 right-4">
-        <WebcamPreview enabled={true} />
-        <div className="text-center mt-2">
-          <span className="text-xs text-craft-text-secondary">You are being monitored</span>
-        </div>
-      </div>
+      {/* Webcam Preview */}
+      <WebcamPreview enabled={cameraPermission} />
 
       {/* Summary Popup */}
       <SummaryPopup
