@@ -45,10 +45,10 @@ const TopPerformersSection = ({
     winner
   }: {
     winner: Winner;
-  }) => <Card className="">
-      <div className="text-center space-y-4">
+  }) => <Card className="bg-slate-900">
+      <div className="text-center space-y-4 bg-slate-900 py-[22px] rounded-sm">
         {/* Rank Icon */}
-        <div className="flex justify-center">
+        <div className="flex justify-center bg-slate-900 py-[4px]">
           {getPositionIcon(winner.rank)}
         </div>
         
