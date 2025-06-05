@@ -1,16 +1,8 @@
-
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Trophy, Medal, Award, Clock, Zap, Target } from "lucide-react";
-
 interface Winner {
   rank: number;
   name: string;
@@ -19,12 +11,12 @@ interface Winner {
   totalQuestions: number;
   xp: number;
 }
-
 interface TopPerformersSectionProps {
   winners: Winner[];
 }
-
-const TopPerformersSection = ({ winners }: TopPerformersSectionProps) => {
+const TopPerformersSection = ({
+  winners
+}: TopPerformersSectionProps) => {
   const getPositionIcon = (rank: number) => {
     switch (rank) {
       case 1:
@@ -37,7 +29,6 @@ const TopPerformersSection = ({ winners }: TopPerformersSectionProps) => {
         return null;
     }
   };
-
   const getCardStyle = (rank: number) => {
     switch (rank) {
       case 1:
@@ -50,9 +41,11 @@ const TopPerformersSection = ({ winners }: TopPerformersSectionProps) => {
         return "bg-craft-panel border-craft-border";
     }
   };
-
-  const PerformerCard = ({ winner }: { winner: Winner }) => (
-    <Card className={`p-6 rounded-2xl transition-all duration-300 hover:scale-105 ${getCardStyle(winner.rank)}`}>
+  const PerformerCard = ({
+    winner
+  }: {
+    winner: Winner;
+  }) => <Card className="">
       <div className="text-center space-y-4">
         {/* Rank Icon */}
         <div className="flex justify-center">
@@ -109,38 +102,29 @@ const TopPerformersSection = ({ winners }: TopPerformersSectionProps) => {
           </div>
         </div>
       </div>
-    </Card>
-  );
-
-  return (
-    <div className="mb-8">
+    </Card>;
+  return <div className="mb-8">
       <h2 className="text-2xl font-bold text-craft-text-primary mb-6">
         Top Performers
       </h2>
       
       {/* Desktop View - 3 Cards Side by Side */}
       <div className="hidden md:grid md:grid-cols-3 gap-6">
-        {winners.map((winner) => (
-          <PerformerCard key={winner.rank} winner={winner} />
-        ))}
+        {winners.map(winner => <PerformerCard key={winner.rank} winner={winner} />)}
       </div>
       
       {/* Mobile View - Carousel */}
       <div className="md:hidden">
         <Carousel className="w-full">
           <CarouselContent className="-ml-2 md:-ml-4">
-            {winners.map((winner) => (
-              <CarouselItem key={winner.rank} className="pl-2 md:pl-4 basis-4/5">
+            {winners.map(winner => <CarouselItem key={winner.rank} className="pl-2 md:pl-4 basis-4/5">
                 <PerformerCard winner={winner} />
-              </CarouselItem>
-            ))}
+              </CarouselItem>)}
           </CarouselContent>
           <CarouselPrevious className="left-2" />
           <CarouselNext className="right-2" />
         </Carousel>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default TopPerformersSection;
